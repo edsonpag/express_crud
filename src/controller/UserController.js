@@ -13,11 +13,7 @@ const store = async (req, res) => {
 
 const index = async (req, res) => {
 
-    const users = await User.find({}, function(err, users) {
-        if(err) {
-            console.log(err);
-        }
-    })
+    const users = await User.find({})
 
     res.json(users);
 }
@@ -29,17 +25,13 @@ const show = async (req, res) => {
 
     if(user) {
         res.json(user)
-    } else {
-        res.json({
-            "msg": "Usuario não encontrado"
-        })
     }
 }
 
 const destroy = async (req, res) => {
     const { user_id } = req.params;
 
-    const user = await User.findByIdAndDelete(user_id);
+    const user = await User.findByIdAndDelete(user_id, { useFindAndModify: false });
 
     res.json({
         "msg": "Usuario deletado"
@@ -55,9 +47,11 @@ const update = async (req, res) => {
         age
     }
     
-    const user = await User.findByIdAndUpdate(user_id, Update)
+    const user = await User.findByIdAndUpdate(user_id, Update, { useFindAndModify: false })
 
-    res.json(user)
+    res.json({
+        "msg": "Usuario atualizado"
+    })
 }
 
 module.exports = {
