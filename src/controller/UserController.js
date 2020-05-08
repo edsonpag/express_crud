@@ -8,26 +8,35 @@ const store = async (req, res) => {
         age: req.body.age
     })
 
-    return res.json(user)
+    return res.json(user);
 }
 
 const index = async (req, res) => {
 
     const users = await User.find({}, function(err, users) {
         if(err) {
-            console.log(err)
+            console.log(err);
         }
     })
 
-    res.json(users)
+    res.json(users);
 }
 
 const show = async (req, res) => {
-    const { user_id } = req.params
+    const { user_id } = req.params;
 
+    await User.findById(user_id, (err, user) => {
+        if(err) {
+            console.log(err);
+        }
 
-    res.json({
-        "msg": "ok"
+        if(user) {
+            res.json(user)
+        }
+
+        res.json({
+            "msg": "Não foi possivel encontrar o usuário"
+        })
     })
 }
 
