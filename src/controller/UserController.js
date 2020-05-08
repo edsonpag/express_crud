@@ -40,8 +40,30 @@ const show = async (req, res) => {
     })
 }
 
+const destroy = async (req, res) => {
+    const { user_id } = req.params;
+
+    await User.findByIdAndDelete(user_id, (err, user) => {
+        if(err) {
+            console.log(err)
+        }
+
+        if(user) {
+            delete user;
+            res.json({
+                "msg": "Usuario deletado"
+            })
+        }
+
+        res.json({
+            "msg": "Usuario não encontrado"
+        })
+    });
+}
+
 module.exports = {
     store,
     index,
-    show
+    show,
+    destroy
 }
