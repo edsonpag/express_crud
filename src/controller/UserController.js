@@ -25,45 +25,45 @@ const index = async (req, res) => {
 const show = async (req, res) => {
     const { user_id } = req.params;
 
-    await User.findById(user_id, (err, user) => {
-        if(err) {
-            console.log(err);
-        }
+    const user = await User.findById(user_id)
 
-        if(user) {
-            res.json(user)
-        }
-
+    if(user) {
+        res.json(user)
+    } else {
         res.json({
-            "msg": "Não foi possivel encontrar o usuário"
+            "msg": "Usuario não encontrado"
         })
-    })
+    }
 }
 
 const destroy = async (req, res) => {
     const { user_id } = req.params;
 
-    await User.findByIdAndDelete(user_id, (err, user) => {
-        if(err) {
-            console.log(err)
-        }
+    const user = await User.findByIdAndDelete(user_id);
 
-        if(user) {
-            delete user;
-            res.json({
-                "msg": "Usuario deletado"
-            })
-        }
+    res.json({
+        "msg": "Usuario deletado"
+    })
+}
 
-        res.json({
-            "msg": "Usuario não encontrado"
-        })
-    });
+const update = async (req, res) => {
+    const { user_id } = req.params;
+    const { name, email, age } = req.body;
+    const Update = {
+        name,
+        email,
+        age
+    }
+    
+    const user = await User.findByIdAndUpdate(user_id, Update)
+
+    res.json(user)
 }
 
 module.exports = {
     store,
     index,
     show,
-    destroy
+    destroy,
+    update
 }
