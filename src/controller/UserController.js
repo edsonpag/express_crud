@@ -15,7 +15,7 @@ const index = async (req, res) => {
 
     const users = await User.find({})
 
-    res.json(users);
+    return res.json(users);
 }
 
 const show = async (req, res) => {
@@ -24,7 +24,7 @@ const show = async (req, res) => {
     const user = await User.findById(user_id)
 
     if(user) {
-        res.json(user)
+        return res.json(user)
     }
 }
 
@@ -33,7 +33,7 @@ const destroy = async (req, res) => {
 
     const user = await User.findByIdAndDelete(user_id, { useFindAndModify: false });
 
-    res.json({
+    return res.json({
         "msg": "Usuario deletado"
     })
 }
@@ -49,7 +49,7 @@ const update = async (req, res) => {
     
     const user = await User.findByIdAndUpdate(user_id, Update, { useFindAndModify: false })
 
-    res.json({
+    return res.json({
         "msg": "Usuario atualizado"
     })
 }
